@@ -59,12 +59,13 @@ class Item extends React.Component {
 				connectDropTarget(
           <div>
             <ItemDiv>
-              <div >
+              <div className={this.props.isOver ? "hover" : null}>
                 <h4>{text}</h4>
                 <div className="allSubItems">
                   {item.contains ? (contains.map((item, index) => {
                     return (
                       <SubItem
+
                         key={index}
                         index={index}
                         item={item}
@@ -90,10 +91,12 @@ export default flow(
   DragSource('item', itemSource, (connect, monitor) => ({
   		connectDragSource: connect.dragSource(),
   		isDragging: monitor.isDragging(),
+
   	}),
   ),
-  DropTarget('item', itemTarget, (connect) => ({
+  DropTarget('item', itemTarget, (connect, monitor) => ({
   	connectDropTarget: connect.dropTarget(),
+		isOver: monitor.isOver(),
   })),
 )(Item)
 
@@ -104,6 +107,10 @@ const ItemDiv = styled.div`
     border-radius: 50px;
     padding: 25px;
     margin: 10px;
+		.hover {
+			background: blue;
+			color: white;
+		}
     .allSubItems {
       border: 1px solid blue;
       display: flex;

@@ -71,7 +71,7 @@ class SubItem extends React.Component {
 				connectDropTarget(
           <div className="subItem">
             <SubItemDiv>
-              <div>
+              <div className={this.props.isOver ? "hover" : null}>
                 <h4>{text}</h4>
                 {this.props.item.contains.map((item, index) => {
                   return (

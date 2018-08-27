@@ -59,20 +59,20 @@ class List extends Component {
     }
 
 
-  combineItems = (dragIndex, hoverIndex) => {
-    console.log(dragIndex)
-    console.log(hoverIndex)
-    const { topList } = this.state
+  combineItems = (dragId, hoverId) => {
+    console.log(dragId, "dragId")
+    console.log(hoverId, "hoverId")
     const copyTopList = this.state.topList.slice();
     console.log(copyTopList);
     let itemA = copyTopList.find(items => {
-       return items.id === dragIndex
+       return items.id === dragId
     })
-    console.log(copyTopList);
-    console.log(itemA);
+    console.log(copyTopList, "copyTopList");
+
+    console.log(itemA, "itemA");
 
     let indexA = copyTopList.indexOf(itemA);
-    console.log(indexA);
+    console.log(indexA, "indexA");
 
     copyTopList.splice(indexA, 1);
 
@@ -80,7 +80,7 @@ class List extends Component {
 
 
     let itemB = copyTopList.find(items => {
-      return items.id === hoverIndex
+      return items.id === hoverId
     });
 
     console.log(itemB);
