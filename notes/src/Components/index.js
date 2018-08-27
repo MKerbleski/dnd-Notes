@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import styled from 'styled-components';
 
 import Item from './Item';
 
@@ -116,8 +117,8 @@ class List extends Component {
 
   render() {
     return (
-      <div>
-        Map of topList
+      <NotesDiv>
+
         {this.state.topList.map((item, index) => {
           return (
             <Item
@@ -130,10 +131,19 @@ class List extends Component {
               combineItems={this.combineItems} />
           )
         })}
-      </div>
+      </NotesDiv>
     );
   }
 }
 
 
 export default DragDropContext(HTML5Backend)(List);
+
+const NotesDiv = styled.div`
+  border: 2px solid black;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;

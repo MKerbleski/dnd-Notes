@@ -7,19 +7,6 @@ import { findDOMNode } from 'react-dom'
 import styled from 'styled-components';
 import SubItem from './SubItem'
 
-const ItemDiv = styled.div`
-    border: 1px solid red;
-    background: lightgray;
-    max-width: 200px;
-    max-height: 300px;
-    .allSubItems {
-      border: 1px solid blue;
-      display: flex;
-
-    }
-`;
-
-
 const style = {
 	border: '1px dashed gray',
 	padding: '0.5rem 1rem',
@@ -35,76 +22,9 @@ const itemSource  = {
       props
     });
   },
-  //endDrag is called when dropped on a target
-//---------------------
-
-  // endDrag(props, monitor) {// this takes props mounted on beginDrag
-  //   console.log("endDrag", "props", props, "monitor", monitor.getDropResult())
-  //   if (!monitor.didDrop()) {
-  //     return;
-  //   }
-  //   // const { onDrop } = props;
-  //   const  {color, text}  = monitor.getItem(); //returns just 'blue'
-  //   // console.log(props.color) // also returns just 'blue'
-  //
-  //   const { shape, catagory } = monitor.getDropResult();//gets props from the target// shape
-  //   props.onDrop( color, shape, text, catagory);//onDrop supplied by parent which attaches the color and shape to the props
-  // },
-
-//---------------
 };
 
 const itemTarget = {
-  // hover(props, monitor, component ) {
-	// 	if (!component) {
-	// 		return null
-	// 	}
-	// 	const dragIndex = monitor.getItem().props.index
-  //   // console.log(monitor)
-	// 	const hoverIndex = props.index
-  //
-	// 	// Don't replace items with themselves
-	// 	if (dragIndex === hoverIndex) {
-	// 		return
-	// 	}
-  //
-	// 	// Determine rectangle on screen
-	// 	const hoverBoundingRect = (findDOMNode(
-	// 		component,
-	// 	)).getBoundingClientRect()
-  //
-	// 	// Get vertical middle
-	// 	const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-  //
-	// 	// Determine mouse position
-	// 	const clientOffset = monitor.getClientOffset()
-  //
-	// 	// Get pixels to the top
-	// 	const hoverClientY = (clientOffset ).y - hoverBoundingRect.top
-  //
-	// 	// Only perform the move when the mouse has crossed half of the items height
-	// 	// When dragging downwards, only move when the cursor is below 50%
-	// 	// When dragging upwards, only move when the cursor is above 50%
-	// 	// Dragging downwards
-	// 	if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-	// 		return
-	// 	}
-  //
-	// 	// Dragging upwards
-	// 	if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-	// 		return
-	// 	}
-  //
-	// 	// Time to actually perform the action
-	// 	props.combineItems(dragIndex, hoverIndex)
-  //
-	// 	// Note: we're mutating the monitor item here!
-	// 	// Generally it's better to avoid mutations,
-	// 	// but it's good here for the sake of performance
-	// 	// to avoid expensive index searches.
-	// 	monitor.getItem().props.index = hoverIndex
-	// },
-
   drop(props, monitor, component ) {
     console.log(props, monitor, component )
     const dragId = monitor.getItem().props.id
@@ -118,26 +38,15 @@ const itemTarget = {
   }
 }
 
-
-
-// const collect = (connect, monitor) => ({
-//   connectDragSource: connect.dragSource(),
-//   isDragging: monitor.isDragging(),
-// });
-
-// export default DragSource(ITEM, ItemObj, collect)(Item);//HOC that ties the Source together
-// export default DragSource(type, spec, collect)(MyComponent);
-
-//---
-
 class Item extends React.Component {
- render() {
+ render(props) {
 		const {
 			text,
 			isDragging,
 			connectDragSource,
 			connectDropTarget,
       contains,
+      item
 		} = this.props
     console.log(this.props)
 		return (
@@ -150,11 +59,19 @@ class Item extends React.Component {
               <div >
                 <h4>{text}</h4>
                 <div className="allSubItems">
-                  {contains.map(subItem => {
+                  {item.contains ? (contains.map((item, index) => {
                     return (
-                      <SubItem text={subItem.text} />
+                      <SubItem
+                        key={index}
+                        index={index}
+                        item={item}
+                        id={item.id}
+                        text={item.text}
+                        contains={item.contains}
+                        combineItems={this.combineItems} // this should be a redux action
+                       />
                     )
-                  })}
+                  })) : <div>no subs</div>}
                 </div>
               </div>
             </ItemDiv>
@@ -176,3 +93,16 @@ export default flow(
   	connectDropTarget: connect.dropTarget(),
   })),
 )(Item)
+
+
+const ItemDiv = styled.div`
+    border: 2px solid red;
+    background: lightgray;
+    border-radius: 50px;
+    padding: 25px;
+    margin: 10px;
+    .allSubItems {
+      border: 1px solid blue;
+      display: flex;
+    }
+`;
