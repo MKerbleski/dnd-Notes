@@ -31,10 +31,13 @@ const itemTarget = {
     // console.log(monitor)
 		const hoverId = props.id
     console.log(dragId, hoverId)
-
     props.combineItems(dragId, hoverId)
-
-
+  },
+  hover(props, monitor, component) {
+    const hoverId = props.id;
+    console.log(hoverId, 'hover Id')
+    const isJustOverThisOne = monitor.isOver({ shallow: true });
+    console.log(isJustOverThisOne)
   }
 }
 
