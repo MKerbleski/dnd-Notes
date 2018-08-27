@@ -35,9 +35,9 @@ const itemTarget = {
   },
   hover(props, monitor, component) {
     const hoverId = props.id;
-    console.log(hoverId, 'hover Id')
+    // console.log(hoverId, 'hover Id')
     const isJustOverThisOne = monitor.isOver({ shallow: true });
-    console.log(isJustOverThisOne)
+    // console.log(isJustOverThisOne)
   }
 }
 

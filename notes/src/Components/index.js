@@ -58,6 +58,13 @@ class List extends Component {
       }
     }
 
+    createNewItem(a, b){
+      console.log({
+        id: Date.now(),
+        text: "newIte",
+        contains: [a, b]
+      }, "createNewItem")
+    }
 
   combineItems = (dragId, hoverId) => {
     console.log(dragId, "dragId")
@@ -67,6 +74,9 @@ class List extends Component {
     let itemA = copyTopList.find(items => {
        return items.id === dragId
     })
+
+// return the parent value as well and then just nest that and it doesn't have to search all sub values
+
     console.log(copyTopList, "copyTopList");
 
     console.log(itemA, "itemA");
@@ -99,6 +109,8 @@ class List extends Component {
       text: "combo",
       contains: [],
     };
+
+    this.createNewItem(itemA, itemB)
 
     newCombo.contains.push(itemA, itemB);
 

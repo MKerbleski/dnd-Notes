@@ -75,14 +75,17 @@ class SubItem extends React.Component {
                 <h4>{text}</h4>
                 {this.props.item.contains.map((item, index) => {
                   return (
-                    <Item
-                      key={index}
-                      index={index}
-                      item={item}
-                      id={item.id}
-                      text={item.text}
-                      contains={item.contains}
-                      combineItems={this.combineItems} />
+										<div className="subSubItem">
+											<Item
+	                      key={index}
+	                      index={index}
+	                      item={item}
+	                      id={item.id}
+	                      text={item.text}
+	                      contains={item.contains}
+	                      combineItems={this.combineItems} />
+										</div>
+
                   )
                 })}
 
@@ -108,8 +111,10 @@ export default flow(
 )(SubItem)
 
 const SubItemDiv = styled.div`
-  border: 2px solid red;
-  background: lightgray;
+  border: 2px solid blue;
+
+  background: lightgreen;
+	
   border-radius: 50px;
   padding: 25px;
   margin: 10px;
@@ -117,4 +122,8 @@ const SubItemDiv = styled.div`
     border: 1px solid blue;
     display: flex;
   }
+	.subSubItems {
+		background: lightgreen;
+
+	}
 `;
