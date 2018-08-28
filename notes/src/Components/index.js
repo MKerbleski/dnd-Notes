@@ -67,42 +67,40 @@ class List extends Component {
     }
 
   combineItems = (dragId, hoverId) => {
-    console.log(dragId, "dragId")
-    console.log(hoverId, "hoverId")
+    // console.log(dragId, "dragId")
+    // console.log(hoverId, "hoverId")
     const copyTopList = this.state.topList.slice();
-    console.log(copyTopList);
     let itemA = copyTopList.find(items => {
        return items.id === dragId
     })
 
 // return the parent value as well and then just nest that and it doesn't have to search all sub values
 
-    console.log(copyTopList, "copyTopList");
-
-    console.log(itemA, "itemA");
+    // console.log(copyTopList, "copyTopList");
+    // console.log(itemA, "itemA");
 
     let indexA = copyTopList.indexOf(itemA);
-    console.log(indexA, "indexA");
+    // console.log(indexA, "indexA");
 
     copyTopList.splice(indexA, 1);
 
-    console.log(copyTopList);
+    // console.log(copyTopList);
 
 
     let itemB = copyTopList.find(items => {
       return items.id === hoverId
     });
 
-    console.log(itemB);
+    // console.log(itemB);
 
     let indexB = copyTopList.indexOf(itemB);
-    console.log(indexB);
+    // console.log(indexB);
 
-    console.log(copyTopList);
+    // console.log(copyTopList);
 
     copyTopList.splice(indexB, 1);
 
-    console.log(copyTopList);
+    // console.log(copyTopList);
 
     const newCombo = {
       id: 243224,
@@ -110,15 +108,15 @@ class List extends Component {
       contains: [],
     };
 
-    this.createNewItem(itemA, itemB)
+    // this.createNewItem(itemA, itemB)
 
     newCombo.contains.push(itemA, itemB);
 
-    console.log(newCombo)
+    // console.log(newCombo)
 
     copyTopList.push(newCombo);
 
-    console.log(copyTopList)
+    // console.log(copyTopList)
 
 
     this.setState({

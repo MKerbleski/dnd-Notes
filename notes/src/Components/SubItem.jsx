@@ -19,7 +19,6 @@ const style = {
 
 const subitemSource  = {
   beginDrag(props) {
-    console.log("beginDrag", props)
     return ({
       props
     });
@@ -30,11 +29,11 @@ const subitemSource  = {
 const subitemTarget = {
 
   drop(props, monitor, component ) {
-    console.log(props, monitor, component )
+
     const dragId = monitor.getItem().props.id
     // console.log(monitor)
 		const hoverId = props.id
-    console.log(dragId, hoverId)
+
 
     props.combineItems(dragId, hoverId)
 
@@ -63,7 +62,7 @@ class SubItem extends React.Component {
 			connectDropTarget,
       contains
 		} = this.props
-    console.log(this.props)
+
 		return (
 			connectDragSource &&
 			connectDropTarget &&
@@ -73,7 +72,7 @@ class SubItem extends React.Component {
             <SubItemDiv>
               <div className={this.props.isOver ? "hover" : null}>
                 <h4>{text}</h4>
-                {this.props.item.contains.map((item, index) => {
+                {this.props.item.contains ? (this.props.item.contains.map((item, index) => {
                   return (
 										<div className="subSubItem">
 											<Item
@@ -87,7 +86,7 @@ class SubItem extends React.Component {
 										</div>
 
                   )
-                })}
+                })) : <div>no subsubitems </div>}
 
               </div>
             </SubItemDiv>
@@ -114,7 +113,7 @@ const SubItemDiv = styled.div`
   border: 2px solid blue;
 
   background: lightgreen;
-	
+
   border-radius: 50px;
   padding: 25px;
   margin: 10px;

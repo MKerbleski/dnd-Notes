@@ -17,7 +17,7 @@ const style = {
 
 const itemSource  = {
   beginDrag(props) { // this mounts any props onto the object
-    console.log("beginDrag", props)
+
     return ({
       props
     });
@@ -26,12 +26,13 @@ const itemSource  = {
 
 const itemTarget = {
   drop(props, monitor, component ) {
-    console.log(props, monitor, component )
+    // console.log(props, monitor, component )
     const dragId = monitor.getItem().props.id
+		const isJustOverThisOne = monitor.isOver({ shallow: true });
     // console.log(monitor)
 		const hoverId = props.id
-    console.log(dragId, hoverId)
-    props.combineItems(dragId, hoverId)
+
+    props.combineItems(dragId, isJustOverThisOne)
   },
   hover(props, monitor, component) {
     const hoverId = props.id;
@@ -51,7 +52,7 @@ class Item extends React.Component {
       contains,
       item
 		} = this.props
-    console.log(this.props)
+
 		return (
 			connectDragSource &&
 			connectDropTarget &&
@@ -62,17 +63,19 @@ class Item extends React.Component {
               <div className={this.props.isOver ? "hover" : null}>
                 <h4>{text}</h4>
                 <div className="allSubItems">
-                  {item.contains ? (contains.map((item, index) => {
-                    return (
-                      <SubItem
+                  {item.contains.length > 0 ? (contains.map((item, index) => {
 
+										return (
+
+											// <div className="subItem">{item.text}</div>
+											<SubItem
                         key={index}
                         index={index}
                         item={item}
                         id={item.id}
                         text={item.text}
                         contains={item.contains}
-                        combineItems={this.combineItems} // this should be a redux action
+                        combineItems={this.props.combineItems} // this should be a redux action
                        />
                     )
                   })) : <div>no subs</div>}
@@ -107,6 +110,10 @@ const ItemDiv = styled.div`
     border-radius: 50px;
     padding: 25px;
     margin: 10px;
+		${'' /* .subItem {
+			height: 50px;
+			width: 50px;
+		} */}
 		.hover {
 			background: blue;
 			color: white;
