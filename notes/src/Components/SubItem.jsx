@@ -1,21 +1,21 @@
 import React from 'react';
 import { DragSource, DropTarget, } from 'react-dnd';
-import { PropTypes } from 'prop-types';
+// import { PropTypes } from 'prop-types';
 import flow from 'lodash/flow'
-import { findDOMNode } from 'react-dom'
+// import { findDOMNode } from 'react-dom'
 import styled from 'styled-components';
 
 import Item from './Item';
 
 
-
-const style = {
-	border: '1px dashed gray',
-	padding: '0.5rem 1rem',
-	marginBottom: '.5rem',
-	backgroundColor: 'white',
-	cursor: 'move',
-}
+//
+// const style = {
+// 	border: '1px dashed gray',
+// 	padding: '0.5rem 1rem',
+// 	marginBottom: '.5rem',
+// 	backgroundColor: 'white',
+// 	cursor: 'move',
+// }
 
 const subitemSource  = {
   beginDrag(props) {
@@ -38,6 +38,12 @@ const subitemTarget = {
     props.combineItems(dragId, hoverId)
 
 
+  },
+	hover(props, monitor, component) {
+    const hoverId = props.id;
+    // console.log(hoverId, 'hover Id')
+    const isJustOverThisOne = monitor.isOver({ shallow: true });
+    // console.log(isJustOverThisOne)
   }
 }
 
@@ -54,27 +60,27 @@ const subitemTarget = {
 //---
 
 class SubItem extends React.Component {
- render() {
+ render(props) {
 		const {
-			text,
+			item,
 			isDragging,
 			connectDragSource,
 			connectDropTarget,
       contains
 		} = this.props
-
+		console.log(props)
 		return (
 			connectDragSource &&
 			connectDropTarget &&
 			connectDragSource(
 				connectDropTarget(
           <div className="subItem">
-            <SubItemDiv>
+            <SubItemDiv>Sub item
               <div className={this.props.isOver ? "hover" : null}>
-                <h4>{text}</h4>
-                {this.props.item.contains ? (this.props.item.contains.map((item, index) => {
+                <h4>sub item text</h4>
+                {item.contains ? (item.contains.map((item, index) => {
                   return (
-										<div className="subSubItem">
+										<div key={index} className="subSubItem">
 											<Item
 	                      key={index}
 	                      index={index}
@@ -82,7 +88,7 @@ class SubItem extends React.Component {
 	                      id={item.id}
 	                      text={item.text}
 	                      contains={item.contains}
-	                      combineItems={this.combineItems} />
+	                      combineItems={this.props.combineItems} />
 										</div>
 
                   )

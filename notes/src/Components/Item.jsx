@@ -1,19 +1,19 @@
 import React from 'react';
 import { DragSource, DropTarget, } from 'react-dnd';
-import { PropTypes } from 'prop-types';
+// import { PropTypes } from 'prop-types';
 
 import flow from 'lodash/flow'
-import { findDOMNode } from 'react-dom'
+// import { findDOMNode } from 'react-dom'
 import styled from 'styled-components';
 import SubItem from './SubItem'
 
-const style = {
-	border: '1px dashed gray',
-	padding: '0.5rem 1rem',
-	marginBottom: '.5rem',
-	backgroundColor: 'white',
-	cursor: 'move',
-}
+// const style = {
+// 	border: '1px dashed gray',
+// 	padding: '0.5rem 1rem',
+// 	marginBottom: '.5rem',
+// 	backgroundColor: 'white',
+// 	cursor: 'move',
+// }
 
 const itemSource  = {
   beginDrag(props) { // this mounts any props onto the object
@@ -28,11 +28,16 @@ const itemTarget = {
   drop(props, monitor, component ) {
     // console.log(props, monitor, component )
     const dragId = monitor.getItem().props.id
-		const isJustOverThisOne = monitor.isOver({ shallow: true });
+		// const isJustOverThisOne = monitor.isOver({ shallow: true });
     // console.log(monitor)
-		const hoverId = props.id
+		const hoverId = props.item.id
 
-    props.combineItems(dragId, isJustOverThisOne)
+		if (hoverId === dragId) {
+			return
+		} else {
+			props.combineItems(dragId, hoverId)
+		}
+
   },
   hover(props, monitor, component) {
     const hoverId = props.id;
@@ -45,7 +50,7 @@ const itemTarget = {
 class Item extends React.Component {
  render(props) {
 		const {
-			text,
+
 			isDragging,
 			connectDragSource,
 			connectDropTarget,
@@ -60,23 +65,20 @@ class Item extends React.Component {
 				connectDropTarget(
           <div>
             <ItemDiv>
+							Item
               <div className={this.props.isOver ? "hover" : null}>
-                <h4>{text}</h4>
+                <h4>{item.text}</h4>
                 <div className="allSubItems">
-                  {item.contains.length > 0 ? (contains.map((item, index) => {
+                  {item.contains ? (contains.map((item, index) => {
 
 										return (
 
-											// <div className="subItem">{item.text}</div>
 											<SubItem
-                        key={index}
-                        index={index}
-                        item={item}
-                        id={item.id}
-                        text={item.text}
-                        contains={item.contains}
-                        combineItems={this.props.combineItems} // this should be a redux action
-                       />
+													key={index}
+												 item={item}
+												 className="subItem"
+											 	combineItems={this.props.combineItems} />
+
                     )
                   })) : <div>no subs</div>}
                 </div>
