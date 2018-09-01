@@ -25,7 +25,7 @@ class List extends Component {
           {
             id: 24,
             text: "go on date",
-
+            contains: [],
           },
           {
             id: 67,
@@ -34,7 +34,7 @@ class List extends Component {
               {
                 id: 31,
                 text: "math",
-
+                contains: [],
               },
               {
                 text: "science",
@@ -43,12 +43,12 @@ class List extends Component {
                   {
                     id: 321,
                     text: "physics",
-
+                    contains: [],
                   },
                   {
                     id: 322,
                     text: "astronomy",
-                    
+                    contains: [],
                   },
                 ]
               },

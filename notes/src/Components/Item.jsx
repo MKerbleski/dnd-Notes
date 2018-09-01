@@ -54,8 +54,6 @@ class Item extends React.Component {
 			isDragging,
 			connectDragSource,
 			connectDropTarget,
-      contains,
-      item
 		} = this.props
 
 		return (
@@ -66,21 +64,20 @@ class Item extends React.Component {
           <div>
             <ItemDiv>
 							Item
-              <div className={this.props.isOver ? "hover" : null}>
-                <h4>{item.text}</h4>
+              <div className={this.props.isOver ? "drop" : null}>
+                <h4>{this.props.item.text}</h4>
                 <div className="allSubItems">
-                  {item.contains ? (contains.map((item, index) => {
-
-										return (
-
-											<SubItem
-													key={index}
-												 item={item}
-												 className="subItem"
-											 	combineItems={this.props.combineItems} />
-
-                    )
-                  })) : <div>no subs</div>}
+                  {this.props.item.contains ?
+                     (this.props.item.contains.map((item, index) => {
+    										return (
+    											<SubItem
+    												key={index}
+    												item={item}
+    												className="subItem"
+    											 	combineItems={this.props.combineItems} />
+                        )
+                  })) :
+                  <div>no subs</div>}
                 </div>
               </div>
             </ItemDiv>
@@ -102,6 +99,7 @@ export default flow(
   DropTarget('item', itemTarget, (connect, monitor) => ({
   	connectDropTarget: connect.dropTarget(),
 		isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
   })),
 )(Item)
 
@@ -119,6 +117,10 @@ const ItemDiv = styled.div`
 		.hover {
 			background: blue;
 			color: white;
+		}
+		.drop {
+			background: pink;
+			color: black;
 		}
     .allSubItems {
       border: 1px solid blue;

@@ -68,7 +68,7 @@ class SubItem extends React.Component {
 			connectDropTarget,
       contains
 		} = this.props
-		console.log(props)
+		console.log(this.props)
 		return (
 			connectDragSource &&
 			connectDropTarget &&
@@ -78,7 +78,8 @@ class SubItem extends React.Component {
             <SubItemDiv>Sub item
               <div className={this.props.isOver ? "hover" : null}>
                 <h4>sub item text</h4>
-                {item.contains ? (item.contains.map((item, index) => {
+                {this.props.item.contains ?
+                   (item.contains.map((item, index) => {
                   return (
 										<div key={index} className="subSubItem">
 											<Item
@@ -90,9 +91,9 @@ class SubItem extends React.Component {
 	                      contains={item.contains}
 	                      combineItems={this.props.combineItems} />
 										</div>
-
                   )
-                })) : <div>no subsubitems </div>}
+                })) :
+                 <div>no subsubitems </div>}
 
               </div>
             </SubItemDiv>
