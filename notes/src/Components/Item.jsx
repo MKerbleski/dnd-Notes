@@ -26,32 +26,29 @@ const itemSource  = {
 
 const itemTarget = {
   drop(props, monitor, component ) {
-    // console.log(props, monitor, component )
+    console.log(props )
     const dragId = monitor.getItem().props.id
+    const dragParentId = monitor.getItem().props.item.parentId
 		// const isJustOverThisOne = monitor.isOver({ shallow: true });
     // console.log(monitor)
 		const hoverId = props.id
+    const hoverParentId = props.item.parentId
 
+    console.log(hoverParentId, 'hoverparentid')
+    console.log(dragParentId, 'dragparentid')
 
 		if (hoverId === dragId) {
 			return
 		} else {
-			props.combineItems(dragId, hoverId)
+			props.combineItems(dragId, hoverId, dragParentId, hoverParentId)
 		}
 
-  },
-  hover(props, monitor, component) {
-    const hoverId = props.id;
-    // console.log(hoverId, 'hover Id')
-    const isJustOverThisOne = monitor.isOver({ shallow: true });
-    // console.log(isJustOverThisOne)
   }
 }
 
 class Item extends React.Component {
  render(props) {
 		const {
-			isDragging,
 			connectDragSource,
 			connectDropTarget,
 		} = this.props
@@ -75,7 +72,7 @@ class Item extends React.Component {
                             index={index}
                             id={item.id}
                             item={item}
-                            combineItems={this.combineItems} />
+                            combineItems={this.props.combineItems} />
                         )
                   })) :
                   <div>no subs</div>}
@@ -93,7 +90,7 @@ class Item extends React.Component {
 export default flow(
   DragSource('item', itemSource, (connect, monitor) => ({
   		connectDragSource: connect.dragSource(),
-  		isDragging: monitor.isDragging(),
+
 
   	}),
   ),

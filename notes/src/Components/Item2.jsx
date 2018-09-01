@@ -5,7 +5,7 @@ import { DragSource, DropTarget, } from 'react-dnd';
 import flow from 'lodash/flow'
 // import { findDOMNode } from 'react-dom'
 import styled from 'styled-components';
-import SubItem from './SubItem'
+import Item from './Item'
 
 // const style = {
 // 	border: '1px dashed gray',
@@ -26,32 +26,30 @@ const itemSource  = {
 
 const itemTarget = {
   drop(props, monitor, component ) {
-    // console.log(props, monitor, component )
+    console.log(props)
     const dragId = monitor.getItem().props.id
+    const dragParentId = monitor.getItem().props.item.parentId
+
 		// const isJustOverThisOne = monitor.isOver({ shallow: true });
     // console.log(monitor)
 		const hoverId = props.id
+    const hoverParentId = props.item.parentId
 
+    console.log(hoverParentId, 'hoverparentid')
+    console.log(dragParentId, 'dragparentid')
 
 		if (hoverId === dragId) {
 			return
 		} else {
-			props.combineItems(dragId, hoverId)
+			props.combineItems(dragId, hoverId, dragParentId, hoverParentId)
 		}
 
-  },
-  hover(props, monitor, component) {
-    const hoverId = props.id;
-    // console.log(hoverId, 'hover Id')
-    const isJustOverThisOne = monitor.isOver({ shallow: true });
-    // console.log(isJustOverThisOne)
   }
 }
 
 class Item2 extends React.Component {
  render(props) {
 		const {
-			isDragging,
 			connectDragSource,
 			connectDropTarget,
 		} = this.props
@@ -62,15 +60,15 @@ class Item2 extends React.Component {
 			connectDragSource(
 				connectDropTarget(
           <div>
-            <ItemDiv>
+            <Item2Div>
 							Item
               <div className={this.props.isOver ? "drop" : null}>
                 <h4>{this.props.id}</h4>
                 <div className="allSubItems">
-                  {/* {this.props.item.contains ?
+                  {this.props.item.contains ?
                      (this.props.item.contains.map((item, index) => {
     										return (
-    											<SubItem
+    											<Item
     												key={index}
     												item={item}
                             parentId={this.props.id}
@@ -78,10 +76,10 @@ class Item2 extends React.Component {
     											 	combineItems={this.props.combineItems} />
                         )
                   })) :
-                  <div>no subs</div>} */}
+                  <div>no subs</div>}
                 </div>
               </div>
-            </ItemDiv>
+            </Item2Div>
           </div>
 
           ),
@@ -93,8 +91,6 @@ class Item2 extends React.Component {
 export default flow(
   DragSource('item', itemSource, (connect, monitor) => ({
   		connectDragSource: connect.dragSource(),
-  		isDragging: monitor.isDragging(),
-
   	}),
   ),
   DropTarget('item', itemTarget, (connect, monitor) => ({
@@ -105,7 +101,7 @@ export default flow(
 )(Item2)
 
 
-const ItemDiv = styled.div`
+const Item2Div = styled.div`
     border: 2px solid red;
     background: lightgray;
     border-radius: 50px;

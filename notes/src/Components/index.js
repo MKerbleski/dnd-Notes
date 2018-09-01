@@ -13,7 +13,7 @@ class List extends Component {
     this.state = {
       topList: [
           {id:1, contains: [], parents: []},
-          {id:2, contains: [],},
+          {id:2, contains: [{id:21, contains: [], parentId: 2},{id:22, contains: [], parentId: 2},],},
           {id:3, contains: [],},
           {id:4, contains: [],},
           {id:5, contains: [],},
@@ -30,53 +30,96 @@ class List extends Component {
     }, "createNewItem")
   }
 
-  combineItems = (dragId, hoverId, parentId) => {
-    console.log(parentId, "parentId")
+  moveUp = (dragId, hoverId, parentId) => {
+    // console.log(parentId, "parentId")
+    // console.log(dragId, "dragId")
+    // console.log(hoverId, "hoverId")
+  }
+
+  combineItems = (dragId, hoverId, dragParentId, hoverParentId) => {
+    console.log(dragParentId, "dragParentId")
     console.log(dragId, "dragId")
+    console.log(hoverParentId, "hoverParentId")
     console.log(hoverId, "hoverId")
+
     const copyTopList = this.state.topList.slice();
 
-    let itemA = copyTopList.find(items => {
-       return items.id === dragId
+    let dragItem = {};
+    let dragParentItem = null;
+    let hoverItem = {};
+    let hoverParentItem = null;
+
+    if (dragParentId) {
+        dragParentItem = copyTopList.find(items => {
+          return items.id === dragParentId
+     })
+     dragItem = dragParentItem.contains.find(item => {
+       return item.id === dragId
+     })
+   } else {
+     dragItem = copyTopList.find(item => {
+       return item.id === dragId
+     })
+   }
+   console.log("Drag Parent: ", dragParentItem)
+   console.log("Drag Item: ", dragItem)
+
+   if (hoverParentId) {
+       hoverParentItem = copyTopList.find(items => {
+         return items.id === hoverParentId
     })
-    let itemB = copyTopList.find(items => {
-      return items.id === hoverId
-    });
+    hoverItem = hoverParentItem.contains.find(item => {
+      return item.id === hoverId
+    })
+  } else {
+    hoverItem = copyTopList.find(item => {
+      return item.id === hoverId
+    })
+  }
+  console.log("Hover Parent: ", hoverParentItem)
+  console.log("Hover Item: ", hoverItem)
 
-// return the parent value as well and then just nest that and it doesn't have to search all sub values
+  let newTopList = [];
 
-    // console.log(copyTopList, "copyTopList");
-    // console.log(itemA, "itemA");
-
-    let indexA = copyTopList.indexOf(itemA);
-    // console.log(indexA, "indexA");
-
-    copyTopList.splice(indexA, 1);
-
-    // console.log(copyTopList);
-
-
-
-    // console.log(itemB);
-    let indexB = copyTopList.indexOf(itemB);
-    // console.log(indexB);
-    // console.log(copyTopList);
-    copyTopList.splice(indexB, 1);
-    // console.log(copyTopList);
-    const newCombo = {
-      id: Date.now(),
-      text: `${itemA} + " + " + ${itemB}`,
-      child: true,
-      contains: [],
-    };
-    // this.createNewItem(itemA, itemB)
-    newCombo.contains.push(itemA, itemB);
-    // console.log(newCombo)
-    copyTopList.push(newCombo);
-    // console.log(copyTopList)
+  if(!dragParentItem){
+    let newTopList = copyTopList.filter(items => {
+      return items.id !== dragId
+    })
     this.setState({
-      topList: copyTopList,
+      topList: newTopList
     })
+  }
+  //
+  // console.log(newTopList)
+  //
+  //   console.log(dragItem, "dragItem");
+  //
+  //   let indexA = copyTopList.indexOf(dragItem);
+  //   // console.log(indexA, "indexA");
+  //
+  //   copyTopList.splice(indexA, 1);
+  //
+  //   // console.log(copyTopList);
+  //
+  //
+  //
+  //   // console.log(itemB);
+  //   let indexB = copyTopList.indexOf(itemB);
+  //   // console.log(indexB);
+  //   // console.log(copyTopList);
+  //   copyTopList.splice(indexB, 1);
+  //
+  //   const newCombo = this.createNewItem(dragItem, itemB)
+  //   newCombo.contains.push(dragItem, itemB);
+  //   // console.log(newCombo)
+  //   copyTopList.push(newCombo);
+  //   // console.log(copyTopList)
+  //   this.setState({
+  //     topList: copyTopList,
+  //     dragItem: dragItem.id,
+  //     itemB: itemB.id,
+  //     combo: newCombo
+  //   })
   }
 
   render() {
@@ -88,10 +131,18 @@ class List extends Component {
               key={index}
               index={index}
               id={item.id}
+              parentId={item.parentId}
               item={item}
               combineItems={this.combineItems} />
           )
         })}
+        {(this.state.itemA) ?
+          (<div>
+            <p>ItemA: {this.state.itemA}</p>
+            <p>ItemB: {this.state.itemB}</p>
+            <p>combo: {this.state.combo.id}</p>
+          </div>) :
+        null}
       </NotesDiv>
     );
   }
