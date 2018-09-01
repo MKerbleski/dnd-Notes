@@ -12,67 +12,36 @@ class List extends Component {
     super(props);
     this.state = {
       topList: [
-          {
-            id: 54,
-            text: "do groceries",
-
-          },
-          {
-            id: 34,
-            text: "rotate tires",
-
-          },
-          {
-            id: 24,
-            text: "go on date",
-            contains: [],
-          },
-          {
-            id: 67,
-            text: "homework",
-            contains: [
-              {
-                id: 31,
-                text: "math",
-                contains: [],
-              },
-              {
-                text: "science",
-                id: 90,
-                contains: [
-                  {
-                    id: 321,
-                    text: "physics",
-                    contains: [],
-                  },
-                  {
-                    id: 322,
-                    text: "astronomy",
-                    contains: [],
-                  },
-                ]
-              },
-            ]
-          },
+          {id:1, contains: [], parents: []},
+          {id:2, contains: [],},
+          {id:3, contains: [],},
+          {id:4, contains: [],},
+          {id:5, contains: [],},
+          {id:6, contains: [],},
         ],
       }
     }
 
-    createNewItem(a, b){
-      console.log({
-        id: Date.now(),
-        text: "newIte",
-        contains: [a, b]
-      }, "createNewItem")
-    }
+  createNewItem(a, b){
+    console.log({
+      id: Date.now(),
+      text: "newIte",
+      contains: [a, b]
+    }, "createNewItem")
+  }
 
-  combineItems = (dragId, hoverId) => {
-    // console.log(dragId, "dragId")
-    // console.log(hoverId, "hoverId")
+  combineItems = (dragId, hoverId, parentId) => {
+    console.log(parentId, "parentId")
+    console.log(dragId, "dragId")
+    console.log(hoverId, "hoverId")
     const copyTopList = this.state.topList.slice();
+
     let itemA = copyTopList.find(items => {
        return items.id === dragId
     })
+    let itemB = copyTopList.find(items => {
+      return items.id === hoverId
+    });
 
 // return the parent value as well and then just nest that and it doesn't have to search all sub values
 
@@ -87,57 +56,39 @@ class List extends Component {
     // console.log(copyTopList);
 
 
-    let itemB = copyTopList.find(items => {
-      return items.id === hoverId
-    });
 
     // console.log(itemB);
-
     let indexB = copyTopList.indexOf(itemB);
     // console.log(indexB);
-
     // console.log(copyTopList);
-
     copyTopList.splice(indexB, 1);
-
     // console.log(copyTopList);
-
     const newCombo = {
-      id: 243224,
-      text: "combo",
+      id: Date.now(),
+      text: `${itemA} + " + " + ${itemB}`,
+      child: true,
       contains: [],
     };
-
     // this.createNewItem(itemA, itemB)
-
     newCombo.contains.push(itemA, itemB);
-
     // console.log(newCombo)
-
     copyTopList.push(newCombo);
-
     // console.log(copyTopList)
-
-
     this.setState({
       topList: copyTopList,
     })
-
   }
 
   render() {
     return (
-      <NotesDiv>
-
+      <NotesDiv>Notes
         {this.state.topList.map((item, index) => {
           return (
             <Item
               key={index}
               index={index}
-              item={item}
               id={item.id}
-              text={item.text}
-              contains={item.contains}
+              item={item}
               combineItems={this.combineItems} />
           )
         })}
@@ -145,7 +96,6 @@ class List extends Component {
     );
   }
 }
-
 
 export default DragDropContext(HTML5Backend)(List);
 

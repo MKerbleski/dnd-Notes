@@ -5,7 +5,7 @@ import { DragSource, DropTarget, } from 'react-dnd';
 import flow from 'lodash/flow'
 // import { findDOMNode } from 'react-dom'
 import styled from 'styled-components';
-import Item2 from './Item2'
+import SubItem from './SubItem'
 
 // const style = {
 // 	border: '1px dashed gray',
@@ -48,7 +48,7 @@ const itemTarget = {
   }
 }
 
-class Item extends React.Component {
+class Item2 extends React.Component {
  render(props) {
 		const {
 			isDragging,
@@ -67,18 +67,18 @@ class Item extends React.Component {
               <div className={this.props.isOver ? "drop" : null}>
                 <h4>{this.props.id}</h4>
                 <div className="allSubItems">
-                  {this.props.item.contains ?
+                  {/* {this.props.item.contains ?
                      (this.props.item.contains.map((item, index) => {
     										return (
-    											<Item2
-                            key={index}
-                            index={index}
-                            id={item.id}
-                            item={item}
-                            combineItems={this.combineItems} />
+    											<SubItem
+    												key={index}
+    												item={item}
+                            parentId={this.props.id}
+    												className="subItem"
+    											 	combineItems={this.props.combineItems} />
                         )
                   })) :
-                  <div>no subs</div>}
+                  <div>no subs</div>} */}
                 </div>
               </div>
             </ItemDiv>
@@ -102,7 +102,7 @@ export default flow(
 		isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
   })),
-)(Item)
+)(Item2)
 
 
 const ItemDiv = styled.div`

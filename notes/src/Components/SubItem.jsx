@@ -29,13 +29,13 @@ const subitemSource  = {
 const subitemTarget = {
 
   drop(props, monitor, component ) {
-
+console.log(props)
     const dragId = monitor.getItem().props.id
     // console.log(monitor)
 		const hoverId = props.id
+    const parentId = props.parentId
 
-
-    props.combineItems(dragId, hoverId)
+    props.combineItems(dragId, hoverId, parentId)
 
 
   },
@@ -75,9 +75,9 @@ class SubItem extends React.Component {
 			connectDragSource(
 				connectDropTarget(
           <div className="subItem">
-            <SubItemDiv>Sub item
+            <SubItemDiv>
               <div className={this.props.isOver ? "hover" : null}>
-                <h4>sub item text</h4>
+                <h4>{this.props.item.id}</h4>
                 {this.props.item.contains ?
                    (item.contains.map((item, index) => {
                   return (
